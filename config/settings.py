@@ -39,6 +39,8 @@ class Settings(BaseSettings):
     # --- Output ------------------------------------------------------------
     output_dir: Path = PROJECT_ROOT / "output"
     logs_dir: Path = PROJECT_ROOT / "logs"
+    data_dir: Path = PROJECT_ROOT / "data"
+    db_path: Path = PROJECT_ROOT / "data" / "history.db"
 
     # --- Notifications (optional) -----------------------------------------
     webhook_url: str | None = Field(
@@ -49,6 +51,7 @@ class Settings(BaseSettings):
     def ensure_dirs(self) -> None:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.logs_dir.mkdir(parents=True, exist_ok=True)
+        self.data_dir.mkdir(parents=True, exist_ok=True)
 
 
 settings = Settings()

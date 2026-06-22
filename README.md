@@ -5,7 +5,7 @@
 <p>
   <img alt="Python" src="https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white">
   <img alt="Playwright" src="https://img.shields.io/badge/Playwright-2EAD33?logo=playwright&logoColor=white">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-14%20passing-success">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-17%20passing-success">
   <img alt="Ruff" src="https://img.shields.io/badge/lint-ruff-261230">
   <img alt="Docker" src="https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
@@ -20,6 +20,7 @@ Este repositório demonstra um **fluxo de RPA completo e production-ready**, nã
 - 🧱 **Arquitetura limpa** com Page Object Model e separação por camadas (core / pages / models / services).
 - ♻️ **Resiliência**: retentativas com *exponential backoff* (Tenacity) e *screenshot* automático em caso de falha.
 - 🧾 **Saída de negócio**: planilha `.xlsx` com tabela estilizada, aba de resumo (KPIs) e gráfico de barras.
+- 🗄️ **Histórico em SQLite**: cada execução é persistida e comparada com a anterior — o relatório marca quais produtos **subiram (▲)** ou **caíram (▼)**, com Δ e Δ%, numa aba dedicada.
 - 📊 **Configuração type-safe** via Pydantic Settings (`.env`).
 - 🪵 **Logging estruturado** (console colorido + arquivo JSON rotativo) com Loguru.
 - ✅ **Qualidade**: testes com `pytest` + cobertura, lint com `ruff`, CI no GitHub Actions.
@@ -53,8 +54,9 @@ rpa-price-monitor/
 │   ├── bot.py                  # orquestra o processo de ponta a ponta
 │   ├── core/                   # browser, logger, retry, utils
 │   ├── pages/                  # Page Object Model
-│   ├── models/                 # Product (domínio + validação)
-│   └── services/               # scraper, report (Excel), notifier
+│   ├── models/                 # Product + ProductDelta (domínio + validação)
+│   └── services/               # scraper, history (SQLite), report (Excel), notifier
+├── data/                       # histórico SQLite (history.db, gerado em runtime)
 ├── tests/                      # pytest (rodam offline)
 ├── .github/workflows/ci.yml    # lint + testes automáticos
 ├── Dockerfile / docker-compose.yml
@@ -116,7 +118,7 @@ Os testes não dependem de rede: validam parsing de preço/rating, o modelo `Pro
 
 ## 🗺️ Roadmap
 
-- [ ] Persistir histórico em SQLite e detectar variações de preço entre execuções
+- [x] Persistir histórico em SQLite e detectar variações de preço entre execuções
 - [ ] Agendamento (cron / GitHub Actions schedule)
 - [ ] Dashboard simples (Streamlit) sobre os relatórios
 

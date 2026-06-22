@@ -10,4 +10,5 @@ htmlcov/
 output/*.xlsx
 logs/*.log
 logs/*.png
+data/*.db
 .DS_Store

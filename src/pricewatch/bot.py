@@ -8,6 +8,7 @@ from config.settings import settings
 
 from .core.browser import browser_session
 from .core.logger import get_logger
+from .services.history import HistoryStore
 from .services.notifier import Notifier
 from .services.report import ReportBuilder
 from .services.scraper import Scraper
@@ -39,7 +40,10 @@ class PriceWatchBot:
             log.warning("No products collected — skipping report generation.")
             raise RuntimeError("Run produced zero products.")
 
-        report_path = self.report_builder.build(products)
+        with HistoryStore(settings.db_path) as history:
+            changes = history.diff_and_record(products)
+
+        report_path = self.report_builder.build(products, changes)
         self.notifier.notify(len(products), report_path)
 
         elapsed = (datetime.now() - started).total_seconds()
