@@ -12,3 +12,4 @@ logs/*.log
 logs/*.png
 data/*.db
 .DS_Store
+HANDOFF.md
